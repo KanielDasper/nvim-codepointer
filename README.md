@@ -7,7 +7,7 @@ A simple plugin for generating codepointers in repositories.
 Install with Neovim's native package manager.
 
 ```lua
-vim.pack.add({"Something here"})
+vim.pack.add({"https://github.com/KanielDasper/nvim-codepointer"})
 ```
 
 ## Usage
