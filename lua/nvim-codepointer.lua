@@ -1,9 +1,9 @@
 local M = {}
 
-function M.codepointer(opts)
+function M.codepointer()
 	local full_path = vim.fn.expand("%:p")
 	local project_root = vim.fn.finddir(".git", full_path)
-	vim.print(full_path)
+	vim.print(full_path .. project_root)
 end
 
 function M.setup(opts)
@@ -11,9 +11,9 @@ function M.setup(opts)
 
 	vim.api.nvim_create_user_command("CodePointer", M.codepointer, {})
 
-	local keymap = opts.keymap() or "<leader>cp"
+	local keymap = opts.keymap or "<leader>cp"
 	vim.keymap.set("n", keymap, M.codepointer, {
-		desc = "Create a codepointer",
+		desc = "Create a codepointer for current file and line",
 		silent = true,
 	})
 end
