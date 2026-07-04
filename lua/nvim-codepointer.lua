@@ -16,27 +16,27 @@ function M.get_codepointer()
 		return table.concat(codepointer_path_tbl)
 	end
 
-	local function get_linenum_pos()
+	local function get_cursor_linenum()
 		local cursor_tbl = vim.api.nvim_win_get_cursor(0)
 		return cursor_tbl[1] -- { line_num, col_num }
 	end
 
-	local project_file_path = get_project_file_path()
-	local line_number = get_linenum_pos()
-	return project_file_path .. ":" .. line_number
+	return get_project_file_path() .. ":" .. get_cursor_linenum()
 end
 
-function M.print_codepointer()
-	vim.print(M.get_codepointer())
+function M.set_codepointer_to_register()
+	local codepointer = M.get_codepointer()
+	vim.fn.setreg("+", codepointer)
+	vim.print("CodePointer saved to the '+' register!")
 end
 
 function M.setup(opts)
 	opts = opts or {}
 
-	vim.api.nvim_create_user_command("CodePointer", M.print_codepointer, {})
+	vim.api.nvim_create_user_command("CodePointer", M.set_codepointer_to_register, {})
 
 	local keymap = opts.keymap or "<leader>cp"
-	vim.keymap.set("n", keymap, M.get_codepointer, {
+	vim.keymap.set("n", keymap, M.set_codepointer_to_register, {
 		desc = "Create a [C]ode[P]ointer for current file and line",
 		silent = true,
 	})
